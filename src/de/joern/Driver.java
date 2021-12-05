@@ -8,6 +8,7 @@ import de.joern.day3.Day3_1;
 import de.joern.day3.Day3_2;
 import de.joern.day4.Day4_1;
 import de.joern.day4.Day4_2;
+import de.joern.day5.Day5;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,7 +50,8 @@ public class Driver {
         DAY3_1("data\\day3.txt", Day3_1::new),
         DAY3_2("data\\day3.txt", Day3_2::new),
         DAY4_1("data\\day4.txt", Day4_1::new),
-        DAY4_2("data\\day4.txt", Day4_2::new)
+        DAY4_2("data\\day4.txt", Day4_2::new),
+        DAY5("data\\day5.txt", Day5::new)
         ;
 
         private final String filename;
