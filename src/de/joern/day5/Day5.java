@@ -6,13 +6,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
-public class Day5 implements ProblemSolver {
+abstract class Day5 implements ProblemSolver {
     private final List<Line> lines = new ArrayList<>();
+    protected final Predicate<Line> lineFilter;
+
+    protected Day5(Predicate<Line> lineFilter) {
+        this.lineFilter = lineFilter;
+    }
+
     @Override
     public void consider(String line) {
         Line newLine = Line.parse(line);
-        if (newLine.isHorizontal() || newLine.isVertical()) {
+        if (lineFilter.test(newLine)) {
             lines.add(newLine);
         }
     }
@@ -23,14 +30,14 @@ public class Day5 implements ProblemSolver {
         PointCollector collector = new PointCollector();
         for (int tested = 0; tested < lines.size(); tested++) {
             Line testedLine = lines.get(tested);
-            System.out.printf("testing %s%n...", testedLine);
+//            System.out.printf("testing %s%n...", testedLine);
             for (int i = tested+1; i < lines.size(); i++) {
                 List<Coordinate> points = collector.getPoints(testedLine);
                 Line candidate = lines.get(i);
                 List<Coordinate> candidatePoints = collector.getPoints(candidate);
                 points.retainAll(candidatePoints);
                 if (!points.isEmpty()) {
-                    System.out.printf("lines overlap: %s and %s", testedLine, lines.get(i));
+//                    System.out.printf("lines overlap: %s and %s", testedLine, lines.get(i));
                     overlaps.addAll(points);
                 }
             }

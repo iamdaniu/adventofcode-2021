@@ -17,6 +17,10 @@ public class Line {
         return start.getX() == end.getX();
     }
 
+    public boolean isDiagonal() {
+        return Math.abs(start.getX() - end.getX()) == Math.abs(start.getY() - end.getY());
+    }
+
     public static Line parse(String toParse) {
         String[] split = toParse.split(" -> ");
         return new Line(
