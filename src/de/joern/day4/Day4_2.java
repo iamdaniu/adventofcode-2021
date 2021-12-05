@@ -9,24 +9,19 @@ public class Day4_2 extends Day4 {
     @Override
     public void finished() {
         for (int draw : drawNumbers) {
-            System.out.print(draw + " ");
             for (Board b : boards) {
                 if (winningBoards.contains(b)) {
                     continue;
                 }
                 b.mark(draw);
                 if (b.isWinning()) {
-                    System.out.println();
                     winningBoards.add(b);
                     if (winningBoards.size() == boards.size()) {
-//                        System.out.printf("final winning board found (%d):%n%s", boards.indexOf(b)+1, b);
                         int boardScore = b.score();
                         int score = draw * boardScore;
                         System.out.printf("last number drawn: %d; winning board score %d - final score %d%n",
                                 draw, boardScore, score);
                         return;
-//                    } else {
-//                        System.out.printf("%d. winning board found at %d%n%s%n", winningBoards.size(), draw, b);
                     }
                 }
             }

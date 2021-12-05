@@ -32,7 +32,6 @@ abstract class Day4 implements ProblemSolver {
 
         void accept(String line) {
             if (drawNumbers == null) {
-//                System.out.println("parsing numbers to draw");
                 drawNumbers = Stream.of(line.split(","))
                         .map(Integer::parseInt)
                         .collect(Collectors.toList());
@@ -43,13 +42,11 @@ abstract class Day4 implements ProblemSolver {
                         .mapToInt(Integer::parseInt)
                         .toArray();
                 if (currentBoard == null) {
-//                    System.out.println("starting board");
                     currentBoard = new Board(row.length);
                     boards.add(currentBoard);
                 }
                 currentBoard.setRow(currentRow++, row);
             } else if (currentBoard != null) {
-//                System.out.println("ending board\n" + currentBoard);
                 currentBoard = null;
                 currentRow = 0;
             }

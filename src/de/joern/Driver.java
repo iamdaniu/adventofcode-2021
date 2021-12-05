@@ -8,67 +8,66 @@ import de.joern.day3.Day3_1;
 import de.joern.day3.Day3_2;
 import de.joern.day4.Day4_1;
 import de.joern.day4.Day4_2;
-import de.joern.day5.Day5_1;
-import de.joern.day5.Day5_2;
+import de.joern.day5.Day5;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class Driver {
 
     public static void main(String[] args) {
         for (PROBLEMS p : PROBLEMS.values()) {
-            System.out.println(p);
             execute(p);
         }
     }
 
     public static void execute(PROBLEMS problem) {
-        final var file = new File(problem.getFilename());
-        final var handler = problem.getSolver();
-        try (FileInputStream fileStream = new FileInputStream(file);
-             Scanner sc = new Scanner(fileStream)) {
-
-            while (sc.hasNextLine()) {
-                final var line = sc.nextLine();
-                handler.consider(line);
+        try {
+            System.out.printf("Day %d%n", problem.day);
+            List<ProblemSolver> solvers = problem.getSolvers();
+            for (int i = 0; i < solvers.size(); i++) {
+                System.out.printf(" %d-%d%n", problem.day, i+1);
+                ProblemSolver solver = solvers.get(i);
+                Files.lines(problem.getFile()).forEach(solver::consider);
+                solver.finished();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        handler.finished();
     }
 
     enum PROBLEMS {
-        DAY1_1("data\\day1.txt", Day1_1::new),
-        DAY1_2("data\\day1.txt", Day1_2::new),
-        DAY2_1("data\\day2.txt", Day2_1::new),
-        DAY2_2("data\\day2.txt", Day2_2::new),
-        DAY3_1("data\\day3.txt", Day3_1::new),
-        DAY3_2("data\\day3.txt", Day3_2::new),
-        DAY4_1("data\\day4.txt", Day4_1::new),
-        DAY4_2("data\\day4.txt", Day4_2::new),
-        DAY5_1("data\\day5.txt", Day5_1::new),
-        DAY5_2("data\\day5.txt", Day5_2::new)
+        DAY1(1, Day1_1::new, Day1_2::new),
+        DAY2(2, Day2_1::new, Day2_2::new),
+        DAY3(3, Day3_1::new, Day3_2::new),
+        DAY4(4, Day4_1::new, Day4_2::new),
+        DAY5(5, Day5::day5_1, Day5::day5_2)
         ;
 
-        private final String filename;
-        private final Supplier<ProblemSolver> solver;
+        public final int day;
+        private final List<Supplier<ProblemSolver>> solver;
 
-        PROBLEMS(String filename, Supplier<ProblemSolver> solver) {
-            this.filename = filename;
-            this.solver = solver;
+        @SafeVarargs
+        PROBLEMS(int day, Supplier<ProblemSolver>... solver) {
+            this.day = day;
+            this.solver = Arrays.asList(solver);
         }
 
-        public String getFilename() {
-            return filename;
+        public Path getFile() {
+            String filename = String.format("day%d.txt", day);
+            return Paths.get("data", filename);
         }
 
-        public ProblemSolver getSolver() {
-            return solver.get();
+        public List<ProblemSolver> getSolvers() {
+            return solver.stream()
+                    .map(Supplier::get)
+                    .collect(Collectors.toList());
         }
     }
 }

@@ -2,52 +2,37 @@ package de.joern.day5;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 public class PointCollector {
-    public List<Coordinate> getPoints(Line line) {
-        List<Coordinate> result = new ArrayList<>();
-        if (line.isHorizontal()) {
-            Coordinate start = line.getStart();
-            Coordinate end = line.getEnd();
-            if (start.getX() > end.getX()) {
-                start = end;
-                end = line.getStart();
-            }
-            for (int i = start.getX(); i <= end.getX(); i++) {
-                result.add(new Coordinate(i, start.getY()));
-            }
-        } else if (line.isVertical()) {
-            Coordinate start = line.getStart();
-            Coordinate end = line.getEnd();
-            if (start.getY() > end.getY()) {
-                start = end;
-                end = line.getStart();
-            }
-            for (int i = start.getY(); i <= end.getY(); i++) {
-                result.add(new Coordinate(start.getX(), i));
-            }
-        } else if (line.isDiagonal()) {
-            Coordinate start = line.getStart();
-            Coordinate end = line.getEnd();
-            if (start.getX() > end.getX()) {
-                start = end;
-                end = line.getStart();
-            }
-            UnaryOperator<Integer> adjustY;
-            if (start.getY() < end.getY()) {
-                adjustY = y -> y + 1;
-            } else {
-                adjustY = y -> y - 1;
-            }
-            int currentY = start.getY();
-            for (int i = start.getX(); i <= end.getX(); i++) {
-                result.add(new Coordinate(i, currentY));
-                currentY = adjustY.apply(currentY);
-            }
-        } else {
+    public List<Coordinate> getPointsRewrite(Line line) {
+        if (!line.isHorizontal() && !line.isVertical() && !line.isDiagonal()) {
             throw new IllegalArgumentException("can only create points for horizontal or vertical lines, not " + line);
         }
+        var start = line.getStart();
+        var end = line.getEnd();
+        UnaryOperator<Integer> adjustX = line.isVertical()
+                ? UnaryOperator.identity()
+                : getAdjustment(line, Coordinate::getX);
+        UnaryOperator<Integer> adjustY = line.isHorizontal()
+                ? UnaryOperator.identity()
+                : getAdjustment(line, Coordinate::getY);
+        final List<Coordinate> result = new ArrayList<>();
+        var current = new Coordinate(start.getX(), start.getY());
+        result.add(current);
+        while (!current.equals(end)) {
+            current = new Coordinate(adjustX.apply(current.getX()),
+                    adjustY.apply(current.getY()));
+            result.add(current);
+        }
         return result;
+    }
+
+    private static UnaryOperator<Integer> getAdjustment(Line line, Function<Coordinate, Integer> getPart) {
+        int adjustment = getPart.apply(line.getStart()) < getPart.apply(line.getEnd())
+                ? 1
+                : -1;
+        return i -> i + adjustment;
     }
 }
