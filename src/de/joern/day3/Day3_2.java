@@ -1,6 +1,5 @@
 package de.joern.day3;
 
-import de.joern.Driver;
 import de.joern.ProblemSolver;
 
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ public class Day3_2 implements ProblemSolver {
             boolean digit = line.charAt(i) == '1';
             digitSet.set(i, digit);
         }
-//        System.out.printf("line: %s ; bitset %s - value %d%n", line, digitSet, toValue(digitSet));
         values.add(digitSet);
     }
 

@@ -6,8 +6,6 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class Day5 implements ProblemSolver {
-    private static final PointCollector POINT_COLLECTOR = new PointCollector();
-
     private final Predicate<Line> lineFilter;
     private final Map<Coordinate, Integer> occurrences = new HashMap<>();
 
@@ -27,7 +25,7 @@ public class Day5 implements ProblemSolver {
     public void consider(String line) {
         final var newLine = Line.parse(line);
         if (lineFilter.test(newLine)) {
-            for (Coordinate c : POINT_COLLECTOR.getPointsRewrite(newLine)) {
+            for (Coordinate c : newLine.getPoints()) {
                 occurrences.merge(c, 1, Integer::sum);
             }
         }

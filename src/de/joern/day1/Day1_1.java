@@ -6,7 +6,7 @@ public class Day1_1 extends IntProblemSolver {
     private int higherCount;
 
     @Override
-    public void consider(Integer integer) {
+    protected void consider(Integer integer) {
         if (lastValue != null && integer > lastValue) {
             higherCount++;
         }

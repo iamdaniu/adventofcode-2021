@@ -3,26 +3,18 @@ package de.joern.day1;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Day1_2 extends IntProblemSolver {
-
-    private List<Integer> window = new ArrayList<>();
-    private int incCount = 0;
+public class Day1_2 extends Day1_1 {
+    private final List<Integer> window = new ArrayList<>();
 
     @Override
     protected void consider(Integer integer) {
-        List<Integer> currentWindow = new ArrayList<>(window);
-        if (currentWindow.size() == 3) {
-            currentWindow.remove(0);
-            currentWindow.add(integer);
-            int oldSum = sum(window);
-            int newSum = sum(currentWindow);
-
-            if (newSum > oldSum) {
-                incCount++;
+        window.add(integer);
+        if (window.size() >= 3) {
+            if (window.size() > 3) {
+                window.remove(0);
             }
-            window = currentWindow;
-        } else {
-            window.add(integer);
+            int sum = sum(window);
+            super.consider(sum);
         }
     }
 
@@ -32,10 +24,5 @@ public class Day1_2 extends IntProblemSolver {
             result += integer;
         }
         return result;
-    }
-
-    @Override
-    public void finished() {
-        System.out.println(incCount);
     }
 }
