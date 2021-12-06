@@ -20,7 +20,8 @@ public class Test {
         System.out.println("Day 5");
         test(Day5.day5_1(), fromFile(5));
         test(Day5.day5_2(), fromFile(5));
-        test(new Day6(), fromFile(6));
+        test(new Day6(80), fromFile(6));
+        test(new Day6(256), fromFile(6));
     }
 
     private static void test(ProblemSolver solver, Stream<String> values) {

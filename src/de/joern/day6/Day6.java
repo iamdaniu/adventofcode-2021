@@ -8,10 +8,22 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Day6 implements ProblemSolver {
-    private static final int DAY_COUNT = 80;
+    private final int dayCount;
 
     private final List<Long> newFishIn = new ArrayList<>(8);
     private long fishCount;
+
+    public Day6(int dayCount) {
+        this.dayCount = dayCount;
+    }
+
+    public static Day6 day6_1() {
+        return new Day6(80);
+    }
+
+    public static Day6 day6_2() {
+        return new Day6(256);
+    }
 
     @Override
     public void consider(String line) {
@@ -28,13 +40,12 @@ public class Day6 implements ProblemSolver {
 
     @Override
     public void finished() {
-        for (int i = 0; i < DAY_COUNT; i++) {
+        for (int i = 0; i < dayCount; i++) {
             long newFish = newFishIn.remove(0);
             newFishIn.add(newFish);
             newFishIn.set(6, newFishIn.get(6) + newFish);
             fishCount += newFish;
-            System.out.printf("%d at day %d: %s%n", fishCount, i, newFishIn);
         }
-        System.out.printf("%d fish after %d days%n", fishCount, DAY_COUNT);
+        System.out.printf("%d fish after %d days%n", fishCount, dayCount);
     }
 }
