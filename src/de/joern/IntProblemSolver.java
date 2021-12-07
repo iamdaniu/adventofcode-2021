@@ -1,9 +1,8 @@
-package de.joern.day1;
+package de.joern;
 
-import de.joern.ProblemSolver;
 
 public abstract class IntProblemSolver implements ProblemSolver {
-    public void consider(String line) {
+    public final void consider(String line) {
         consider(Integer.parseInt(line));
     }
 
