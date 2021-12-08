@@ -7,6 +7,7 @@ import de.joern.day5.Day5;
 import de.joern.day6.Day6;
 import de.joern.day7.Day7;
 import de.joern.day8.Day8_1;
+import de.joern.day8.Day8_2;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,6 +28,7 @@ public class Test {
         test(Day7.day7_1(), fromFile(7));
         test(Day7.day7_2(), fromFile(7));
         test(new Day8_1(), fromFile(8));
+        test(new Day8_2(), fromFile(8));
     }
 
     private static void test(ProblemSolver solver, Stream<String> values) {
