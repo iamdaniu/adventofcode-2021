@@ -11,6 +11,7 @@ import de.joern.day4.Day4_2;
 import de.joern.day5.Day5;
 import de.joern.day6.Day6;
 import de.joern.day7.Day7;
+import de.joern.day8.Day8_1;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,7 +52,8 @@ public class Driver {
         DAY4(4, Day4_1::new, Day4_2::new),
         DAY5(5, Day5::day5_1, Day5::day5_2),
         DAY6(6, Day6::day6_1, Day6::day6_2),
-        DAY7(7, Day7::day7_1, Day7::day7_2)
+        DAY7(7, Day7::day7_1, Day7::day7_2),
+        DAY8(8, Day8_1::new),
         ;
 
         public final int day;
