@@ -9,26 +9,25 @@ public class Day9_2 extends Day9 {
 
     @Override
     public void finished() {
-        Set<Point> inAnyBasin = new HashSet<>(map.getHeight() * map.getWidth());
+        Set<Point> inAnyBasin = new HashSet<>();
         List<Set<Point>> basins = new ArrayList<>();
-        for (int row = 0; row < map.getHeight(); row++) {
-            for (int col = 0; col < map.getWidth(); col++) {
-                Point currentPoint = new Point(row, col);
-                if (map.heightAt(row, col) == 9 || inAnyBasin.contains(currentPoint)) {
-                    continue;
-                }
-                Set<Point> basin = getBasin(currentPoint);
-                inAnyBasin.addAll(basin);
-                basins.add(basin);
-            }
-        }
+        map.allPoints()
+                .filter(p -> map.heightAt(p) != 9)
+                .filter(p -> !inAnyBasin.contains(p))
+                .forEach(currentPoint -> {
+                    Set<Point> basin = getBasin(currentPoint);
+                    inAnyBasin.addAll(basin);
+                    basins.add(basin);
+                });
+
         int result = basins.stream()
                 .sorted(REVERSE_SIZE)
                 .mapToInt(Collection::size)
                 .limit(3)
-                .reduce(1, (i1, i2) -> i1*i2);
+                .reduce(1, (i1, i2) -> i1 * i2);
         System.out.printf("multiplication result of 3 largest basins sizes is %d%n", result);
     }
+
     private Set<Point> getBasin(Point point) {
         Set<Point> basin = new HashSet<>();
         Queue<Point> toCheck = new ArrayDeque<>();
@@ -36,7 +35,7 @@ public class Day9_2 extends Day9 {
         Point currentPoint;
         while ((currentPoint = toCheck.poll()) != null) {
             basin.add(currentPoint);
-            map.surroundingPoints(currentPoint).stream()
+            map.surroundingPoints(currentPoint)
                     .filter(p -> map.heightAt(p) != 9)
                     .filter(p -> !basin.contains(p))
                     .forEach(toCheck::add);
