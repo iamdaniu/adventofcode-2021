@@ -1,5 +1,6 @@
 package de.joern.test;
 
+import de.joern.Day10;
 import de.joern.ProblemSolver;
 import de.joern.day4.Day4_1;
 import de.joern.day4.Day4_2;
@@ -33,6 +34,7 @@ public class Test {
         test(new Day8_2(), fromFile(8));
         test(new Day9_1(), fromFile(9));
         test(new Day9_2(), fromFile(9));
+        test(new Day10(), fromFile(10));
     }
 
     private static void test(ProblemSolver solver, Stream<String> values) {
