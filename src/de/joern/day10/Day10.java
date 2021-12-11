@@ -1,4 +1,4 @@
-package day10;
+package de.joern.day10;
 
 import de.joern.ProblemSolver;
 

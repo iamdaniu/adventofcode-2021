@@ -1,5 +1,7 @@
 package de.joern.day9;
 
+import de.joern.IntField;
+
 import java.util.*;
 import java.util.List;
 
@@ -9,13 +11,13 @@ public class Day9_2 extends Day9 {
 
     @Override
     public void finished() {
-        Set<Point> inAnyBasin = new HashSet<>();
-        List<Set<Point>> basins = new ArrayList<>();
+        Set<IntField.Point> inAnyBasin = new HashSet<>();
+        List<Set<IntField.Point>> basins = new ArrayList<>();
         map.allPoints()
-                .filter(p -> map.heightAt(p) != 9)
+                .filter(p -> map.valueAt(p) != 9)
                 .filter(p -> !inAnyBasin.contains(p))
                 .forEach(currentPoint -> {
-                    Set<Point> basin = getBasin(currentPoint);
+                    Set<IntField.Point> basin = getBasin(currentPoint);
                     inAnyBasin.addAll(basin);
                     basins.add(basin);
                 });
@@ -28,18 +30,7 @@ public class Day9_2 extends Day9 {
         System.out.printf("multiplication result of 3 largest basins sizes is %d%n", result);
     }
 
-    private Set<Point> getBasin(Point point) {
-        Set<Point> basin = new HashSet<>();
-        Queue<Point> toCheck = new ArrayDeque<>();
-        toCheck.add(point);
-        Point currentPoint;
-        while ((currentPoint = toCheck.poll()) != null) {
-            basin.add(currentPoint);
-            map.surroundingPoints(currentPoint)
-                    .filter(p -> map.heightAt(p) != 9)
-                    .filter(p -> !basin.contains(p))
-                    .forEach(toCheck::add);
-        }
-        return basin;
+    private Set<IntField.Point> getBasin(IntField.Point point) {
+        return map.depthSearch(point, IntField::surroundingPoints);
     }
 }

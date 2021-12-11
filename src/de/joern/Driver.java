@@ -1,8 +1,9 @@
 package de.joern;
 
-import day10.Day10;
+import de.joern.day10.Day10;
 import de.joern.day1.Day1_1;
 import de.joern.day1.Day1_2;
+import de.joern.day11.Day11;
 import de.joern.day2.Day2_1;
 import de.joern.day2.Day2_2;
 import de.joern.day3.Day3_1;
@@ -60,6 +61,7 @@ public class Driver {
         DAY8(8, Day8_1::new, Day8_2::new),
         DAY9(9, Day9_1::new, Day9_2::new),
         DAY10(10, Day10::new),
+        DAY11(11, Day11::new),
         ;
 
         public final int day;
