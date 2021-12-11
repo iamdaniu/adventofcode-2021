@@ -39,7 +39,7 @@ public class Day6 implements ProblemSolver {
     }
 
     @Override
-    public void finished() {
+    public long finished() {
         for (int i = 0; i < dayCount; i++) {
             long newFish = newFishIn.remove(0);
             newFishIn.add(newFish);
@@ -47,5 +47,6 @@ public class Day6 implements ProblemSolver {
             fishCount += newFish;
         }
         System.out.printf("%d fish after %d days%n", fishCount, dayCount);
+        return fishCount;
     }
 }

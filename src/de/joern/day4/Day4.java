@@ -18,14 +18,6 @@ abstract class Day4 implements ProblemSolver {
         parser.accept(line);
     }
 
-    @Override
-    public void finished() {
-        for (int i = 0; i < boards.size(); i++) {
-            System.out.println("Board " + i);
-            System.out.println(boards.get(i));
-        }
-    }
-
     private class Parser {
         private int currentRow;
         private Board currentBoard;

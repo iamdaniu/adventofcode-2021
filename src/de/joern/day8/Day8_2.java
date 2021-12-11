@@ -27,8 +27,9 @@ public class Day8_2 implements ProblemSolver {
     }
 
     @Override
-    public void finished() {
+    public long finished() {
         System.out.printf("sum of all line outputs is %d%n", sum);
+        return sum;
     }
 
     static BitSet toBitset(String input) {

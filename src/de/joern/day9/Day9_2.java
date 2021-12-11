@@ -10,7 +10,7 @@ public class Day9_2 extends Day9 {
             Comparator.<Collection<?>, Integer>comparing(Collection::size).reversed();
 
     @Override
-    public void finished() {
+    public long finished() {
         Set<IntField.Point> inAnyBasin = new HashSet<>();
         List<Set<IntField.Point>> basins = new ArrayList<>();
         map.allPoints()
@@ -28,6 +28,7 @@ public class Day9_2 extends Day9 {
                 .limit(3)
                 .reduce(1, (i1, i2) -> i1 * i2);
         System.out.printf("multiplication result of 3 largest basins sizes is %d%n", result);
+        return result;
     }
 
     private Set<IntField.Point> getBasin(IntField.Point point) {

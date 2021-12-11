@@ -16,7 +16,8 @@ public class Day1_1 extends IntProblemSolver {
     }
 
     @Override
-    public void finished() {
+    public long finished() {
         System.out.println(higherCount);
+        return higherCount;
     }
 }

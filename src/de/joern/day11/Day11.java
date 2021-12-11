@@ -3,19 +3,33 @@ package de.joern.day11;
 import de.joern.IntField;
 import de.joern.ProblemSolver;
 
+import java.util.function.BinaryOperator;
+
 public class Day11 implements ProblemSolver {
     private final IntField map = new IntField();
+    private final BinaryOperator<Integer> selectResult;
+
+    protected Day11(BinaryOperator<Integer> selectResult) {
+        this.selectResult = selectResult;
+    }
 
     @Override
     public void consider(String line) {
         map.add(line);
     }
 
+    public static ProblemSolver day11_1() {
+        return new Day11((count, steps) -> count);
+    }
+    public static ProblemSolver day11_2() {
+        return new Day11((count, steps) -> steps);
+    }
+
     @Override
-    public void finished() {
+    public long finished() {
         int flashCount = 0;
-        int i;
-        for (i = 0; i < 100; i++) {
+        int steps;
+        for (steps = 0; steps < 100; steps++) {
             int flashes = step();
             flashCount += flashes;
         }
@@ -23,9 +37,10 @@ public class Day11 implements ProblemSolver {
         int totalFlashes = 0;
         while (totalFlashes != map.getHeight()*map.getWidth()) {
             totalFlashes = step();
-            i++;
+            steps++;
         }
-        System.out.printf("synchronized after %d steps%n", i);
+        System.out.printf("synchronized after %d steps%n", steps);
+        return selectResult.apply(flashCount, steps);
     }
 
     private int step() {

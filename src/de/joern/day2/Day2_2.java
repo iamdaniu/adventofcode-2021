@@ -18,10 +18,4 @@ public class Day2_2 extends Day2 {
     protected void down(int value) {
         aim += value;
     }
-
-    @Override
-    public void finished() {
-        System.out.printf("depth: %d, position: %d; total %d%n", coordinates.depth, coordinates.position,
-                coordinates.depth * coordinates.position);
-    }
 }

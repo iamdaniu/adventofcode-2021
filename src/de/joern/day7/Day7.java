@@ -35,11 +35,10 @@ public class Day7 implements ProblemSolver {
             maxValue = Math.max(maxValue, value);
             values.add(value);
         }
-        System.out.printf("read %d values - min %d, max %d%n", values.size(), minValue, maxValue);
     }
 
     @Override
-    public void finished() {
+    public long finished() {
         int target = 0;
         long result = Integer.MAX_VALUE;
         for (int i = minValue; i < maxValue+1; i++) {
@@ -53,6 +52,7 @@ public class Day7 implements ProblemSolver {
             }
         }
         System.out.printf("minimum sum is %d for value %d%n", result, target);
+        return result;
     }
 
     private static int distance(int i1, int i2) {

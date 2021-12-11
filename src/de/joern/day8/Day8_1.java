@@ -19,7 +19,8 @@ public class Day8_1 implements ProblemSolver {
     }
 
     @Override
-    public void finished() {
+    public long finished() {
         System.out.printf("unique digits in output: %d%n", totalCount);
+        return totalCount;
     }
 }

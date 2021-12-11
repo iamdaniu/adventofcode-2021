@@ -1,7 +1,7 @@
 package de.joern.day4;
 
 public class Day4_1 extends Day4 {
-    public void finished() {
+    public long finished() {
         for (int draw : drawNumbers) {
             for (Board b : boards) {
                 b.mark(draw);
@@ -10,9 +10,10 @@ public class Day4_1 extends Day4 {
                     int score = draw * boardScore;
                     System.out.printf("last number drawn: %d; winning board score %d - final score %d%n",
                             draw, boardScore, score);
-                    return;
+                    return score;
                 }
             }
         }
+        return -1;
     }
 }

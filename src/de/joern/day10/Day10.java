@@ -3,13 +3,16 @@ package de.joern.day10;
 import de.joern.ProblemSolver;
 
 import java.util.*;
+import java.util.function.BinaryOperator;
 
 public class Day10 implements ProblemSolver {
-    private long result = 0;
     private static final Map<Character, Character> closing = new HashMap<>();
     private static final Map<Character, Character> opening = new HashMap<>();
     private static final Map<Character, Integer> debugScore = new HashMap<>();
     private static final String correctionScore = "0)]}>";
+
+    private long totalDebugScore = 0;
+    private final BinaryOperator<Long> selectResult;
 
     private final List<Stack<Character>> incompleteLines = new ArrayList<>();
     static {
@@ -24,6 +27,17 @@ public class Day10 implements ProblemSolver {
         debugScore.put('>', 25137);
     }
 
+    protected Day10(BinaryOperator<Long> selectResult) {
+        this.selectResult = selectResult;
+    }
+
+    public static ProblemSolver day10_1() {
+        return new Day10((debug, correction) -> debug);
+    }
+    public static ProblemSolver day10_2() {
+        return new Day10((debug, correction) -> correction);
+    }
+
     @Override
     public void consider(String line) {
         Stack<Character> stack = new Stack<>();
@@ -31,7 +45,7 @@ public class Day10 implements ProblemSolver {
             char at = line.charAt(i);
             if (closing.containsKey(at)) {
                 if (stack.isEmpty() || closing.get(at) != stack.pop()) {
-                    result += debugScore.get(at);
+                    totalDebugScore += debugScore.get(at);
                     return;
                 }
             } else {
@@ -42,15 +56,17 @@ public class Day10 implements ProblemSolver {
     }
 
     @Override
-    public void finished() {
-        System.out.printf("total debug result in lines is %d%n", result);
+    public long finished() {
+        System.out.printf("total debug result in lines is %d%n", totalDebugScore);
         List<Long> allScores = new ArrayList<>();
         for (Stack<Character> incomplete : incompleteLines) {
             allScores.add(correctionScore(incomplete));
         }
         Collections.sort(allScores);
         int middleIndex = (allScores.size()-1)/2;
-        System.out.printf("total correction result in lines is %d%n", allScores.get(middleIndex));
+        long correctionScore = allScores.get(middleIndex);
+        System.out.printf("total correction result in lines is %d%n", correctionScore);
+        return selectResult.apply(totalDebugScore, correctionScore);
     }
 
     private static long correctionScore(Stack<Character> incomplete) {

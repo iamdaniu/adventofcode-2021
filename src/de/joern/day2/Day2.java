@@ -15,6 +15,16 @@ abstract class Day2 implements ProblemSolver {
         }
     }
 
+    @Override
+    public final long finished() {
+        int result = coordinates.depth * coordinates.position;
+        System.out.printf(
+                "depth: %d, position: %d; total: %d%n",
+                coordinates.depth, coordinates.position,
+                result);
+        return result;
+    }
+
     protected abstract void forward(int amount);
 
     protected abstract void down(int amount);

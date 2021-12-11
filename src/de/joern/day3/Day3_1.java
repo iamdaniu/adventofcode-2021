@@ -24,7 +24,7 @@ public class Day3_1 implements ProblemSolver {
     }
 
     @Override
-    public void finished() {
+    public long finished() {
         int gamma = 0;
         int epsilon = 0;
         for (int i = 0; i < bitFinders.length; i++) {
@@ -36,6 +36,8 @@ public class Day3_1 implements ProblemSolver {
                 epsilon += bitValue;
             }
         }
-        System.out.printf("gamma: %d; epsilon: %d - consumption: %d%n", gamma, epsilon, (gamma * epsilon));
+        int result = gamma * epsilon;
+        System.out.printf("gamma: %d; epsilon: %d - consumption: %d%n", gamma, epsilon, result);
+        return result;
     }
 }

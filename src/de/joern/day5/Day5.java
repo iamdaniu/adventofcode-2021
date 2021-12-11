@@ -32,11 +32,12 @@ public class Day5 implements ProblemSolver {
     }
 
     @Override
-    public void finished() {
+    public long finished() {
         final var count = occurrences.values().stream()
                 .mapToInt(Integer::intValue)
                 .filter(i -> i > 1)
                 .count();
         System.out.printf("lines overlap in %d points%n", count);
+        return count;
     }
 }

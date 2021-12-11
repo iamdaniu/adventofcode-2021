@@ -7,7 +7,7 @@ public class Day4_2 extends Day4 {
     private final List<Board> winningBoards = new ArrayList<>();
 
     @Override
-    public void finished() {
+    public long finished() {
         for (int draw : drawNumbers) {
             for (Board b : boards) {
                 if (winningBoards.contains(b)) {
@@ -21,10 +21,11 @@ public class Day4_2 extends Day4 {
                         int score = draw * boardScore;
                         System.out.printf("last number drawn: %d; winning board score %d - final score %d%n",
                                 draw, boardScore, score);
-                        return;
+                        return score;
                     }
                 }
             }
         }
+        return -1;
     }
 }

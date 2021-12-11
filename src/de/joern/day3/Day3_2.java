@@ -23,10 +23,12 @@ public class Day3_2 implements ProblemSolver {
     }
 
     @Override
-    public void finished() {
+    public long finished() {
         final int oxygen = getFilteredValue(false);
         final int co2 = getFilteredValue(true);
-        System.out.printf("oxygen: %d; co2: %d - combined: %d%n", oxygen, co2, (oxygen*co2));
+        int result = oxygen * co2;
+        System.out.printf("oxygen: %d; co2: %d - combined: %d%n", oxygen, co2, result);
+        return result;
     }
 
     @SuppressWarnings("SimplifiableConditionalExpression")
