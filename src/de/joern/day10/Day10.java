@@ -14,7 +14,7 @@ public class Day10 implements ProblemSolver {
     private long totalDebugScore = 0;
     private final BinaryOperator<Long> selectResult;
 
-    private final List<Stack<Character>> incompleteLines = new ArrayList<>();
+    private final List<Long> allScores = new ArrayList<>();
     static {
         closing.put(')', '(');
         closing.put(']', '[');
@@ -52,16 +52,13 @@ public class Day10 implements ProblemSolver {
                 stack.push(at);
             }
         }
-        incompleteLines.add(stack);
+        allScores.add(correctionScore(stack));
     }
 
     @Override
     public long finished() {
         System.out.printf("total debug result in lines is %d%n", totalDebugScore);
-        List<Long> allScores = new ArrayList<>();
-        for (Stack<Character> incomplete : incompleteLines) {
-            allScores.add(correctionScore(incomplete));
-        }
+
         Collections.sort(allScores);
         int middleIndex = (allScores.size()-1)/2;
         long correctionScore = allScores.get(middleIndex);
