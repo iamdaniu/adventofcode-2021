@@ -1,6 +1,6 @@
 package de.joern.test;
 
-import de.joern.Day10;
+import day10.Day10;
 import de.joern.ProblemSolver;
 import de.joern.day4.Day4_1;
 import de.joern.day4.Day4_2;

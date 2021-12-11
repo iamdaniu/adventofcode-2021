@@ -1,4 +1,6 @@
-package de.joern;
+package day10;
+
+import de.joern.ProblemSolver;
 
 import java.util.*;
 

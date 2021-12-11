@@ -1,5 +1,6 @@
 package de.joern;
 
+import day10.Day10;
 import de.joern.day1.Day1_1;
 import de.joern.day1.Day1_2;
 import de.joern.day2.Day2_1;
