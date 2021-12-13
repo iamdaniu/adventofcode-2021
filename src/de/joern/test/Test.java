@@ -5,6 +5,7 @@ import de.joern.day1.Day1_2;
 import de.joern.day10.Day10;
 import de.joern.ProblemSolver;
 import de.joern.day11.Day11;
+import de.joern.day12.Day12;
 import de.joern.day2.Day2_1;
 import de.joern.day2.Day2_2;
 import de.joern.day3.Day3_1;
@@ -61,6 +62,8 @@ public class Test {
         System.out.println("Day 11");
         result &= test(Day11.day11_1(), fromFile(11), 1656);
         result &= test(Day11.day11_2(), fromFile(11), 195);
+        System.out.println("Day 12");
+        result &= test(new Day12(), fromFile(12), 10);
 
         System.out.println(result ? "all tests successful" : "test(s) failed");
     }
