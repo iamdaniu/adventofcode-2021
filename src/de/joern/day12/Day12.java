@@ -3,9 +3,39 @@ package de.joern.day12;
 import de.joern.ProblemSolver;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 
 public class Day12 implements ProblemSolver {
     private final Graph graph = new Graph();
+
+    private final BiPredicate<Path, Node> canAdd;
+
+    private Day12(BiPredicate<Path, Node> canAdd) {
+        this.canAdd = canAdd;
+    }
+
+    public static Day12 day12_1() {
+        return new Day12((p, n) -> n.isBig() || !p.contains(n));
+    }
+
+    public static Day12 day12_2() {
+        return new Day12((p, n) -> n.isBig() ||
+                !p.contains(n) ||
+                allSmallOnlyOnce(p));
+    }
+
+    private static boolean allSmallOnlyOnce(Path p) {
+        Set<Node> existing = new HashSet<>();
+        for (Node n : p.nodes) {
+            if (n.isBig()) {
+                continue;
+            }
+            if (!existing.add(n)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public void consider(String line) {
@@ -15,24 +45,20 @@ public class Day12 implements ProblemSolver {
 
     @Override
     public long finished() {
-        final List<Path> result = new ArrayList<>();
+        final Set<Path> result = new LinkedHashSet<>();
         final Stack<Path> paths = new Stack<>();
         final Path currentPath = new Path().add(graph.getStartNode());
         paths.push(currentPath);
         while (!paths.isEmpty()) {
             Path p = paths.pop();
-            System.out.printf("starting for path %s%n", p);
             for (Path further : appendAll(p, graph.connections(p.lastNode()))) {
-                System.out.printf(" - checking path %s%n", further);
                 if (further.lastNode().equals(graph.getEndNode())) {
-                    System.out.println("it's an end path");
                     result.add(further);
                 } else {
                     paths.push(further);
                 }
             }
         }
-        result.forEach(System.out::println);
         System.out.printf("found %d paths%n", result.size());
         return result.size();
     }
@@ -40,7 +66,7 @@ public class Day12 implements ProblemSolver {
     public List<Path> appendAll(Path candidate, Collection<Node> nodes) {
         List<Path> result = new ArrayList<>(nodes.size());
         for (Node n : nodes) {
-            if (n.isBig() || !candidate.contains(n)) {
+            if (canAdd.test(candidate, n) && !n.equals(graph.getStartNode())) {
                 Path newPath = new Path(candidate.nodes).add(n);
                 result.add(newPath);
             }
@@ -101,6 +127,19 @@ public class Day12 implements ProblemSolver {
         @Override
         public String toString() {
             return nodes.toString();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Path path = (Path) o;
+            return Objects.equals(nodes, path.nodes);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(nodes);
         }
     }
     static record Node(String name) {

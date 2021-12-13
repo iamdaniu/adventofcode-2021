@@ -63,7 +63,7 @@ public class Driver {
         DAY9(9, Day9_1::new, Day9_2::new),
         DAY10(10, Day10::day10_1),
         DAY11(11, Day11::day11_1),
-        DAY12(12, Day12::new),
+        DAY12(12, Day12::day12_1, Day12::day12_2),
         ;
 
         public final int day;

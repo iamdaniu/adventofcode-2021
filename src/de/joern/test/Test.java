@@ -63,7 +63,8 @@ public class Test {
         result &= test(Day11.day11_1(), fromFile(11), 1656);
         result &= test(Day11.day11_2(), fromFile(11), 195);
         System.out.println("Day 12");
-        result &= test(new Day12(), fromFile(12), 10);
+        result &= test(Day12.day12_1(), fromFile(12), 10);
+        result &= test(Day12.day12_2(), fromFile(12), 36);
 
         System.out.println(result ? "all tests successful" : "test(s) failed");
     }
