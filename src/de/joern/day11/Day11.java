@@ -1,6 +1,7 @@
 package de.joern.day11;
 
 import de.joern.IntField;
+import de.joern.Point;
 import de.joern.ProblemSolver;
 
 import java.util.function.BinaryOperator;
@@ -52,7 +53,7 @@ public class Day11 implements ProblemSolver {
         return totalFlashes;
     }
 
-    private int raiseEnergy(IntField.Point point) {
+    private int raiseEnergy(Point point) {
         int result = 0;
         map.setValueAt(point, map.valueAt(point) + 1);
         if (map.valueAt(point) == 10) {

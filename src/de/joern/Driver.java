@@ -5,6 +5,7 @@ import de.joern.day1.Day1_1;
 import de.joern.day1.Day1_2;
 import de.joern.day11.Day11;
 import de.joern.day12.Day12;
+import de.joern.day13.Day13;
 import de.joern.day2.Day2_1;
 import de.joern.day2.Day2_2;
 import de.joern.day3.Day3_1;
@@ -64,6 +65,7 @@ public class Driver {
         DAY10(10, Day10::day10_1),
         DAY11(11, Day11::day11_1),
         DAY12(12, Day12::day12_1, Day12::day12_2),
+        DAY13(13, Day13::new),
         ;
 
         public final int day;

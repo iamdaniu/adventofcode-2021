@@ -1,6 +1,6 @@
 package de.joern.day9;
 
-import de.joern.IntField;
+import de.joern.Point;
 
 public class Day9_1 extends Day9 {
     @Override
@@ -13,7 +13,7 @@ public class Day9_1 extends Day9 {
         return sum;
     }
 
-    private int getMinInSurrounding(IntField.Point p) {
+    private int getMinInSurrounding(Point p) {
         return map.surroundingPoints(p)
                 .mapToInt(map::valueAt)
                 .min().orElse(Integer.MAX_VALUE);

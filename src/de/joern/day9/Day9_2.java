@@ -1,6 +1,7 @@
 package de.joern.day9;
 
 import de.joern.IntField;
+import de.joern.Point;
 
 import java.util.*;
 import java.util.List;
@@ -11,13 +12,13 @@ public class Day9_2 extends Day9 {
 
     @Override
     public long finished() {
-        Set<IntField.Point> inAnyBasin = new HashSet<>();
-        List<Set<IntField.Point>> basins = new ArrayList<>();
+        Set<Point> inAnyBasin = new HashSet<>();
+        List<Set<Point>> basins = new ArrayList<>();
         map.allPoints()
                 .filter(p -> map.valueAt(p) != 9)
                 .filter(p -> !inAnyBasin.contains(p))
                 .forEach(currentPoint -> {
-                    Set<IntField.Point> basin = getBasin(currentPoint);
+                    Set<Point> basin = getBasin(currentPoint);
                     inAnyBasin.addAll(basin);
                     basins.add(basin);
                 });
@@ -31,7 +32,7 @@ public class Day9_2 extends Day9 {
         return result;
     }
 
-    private Set<IntField.Point> getBasin(IntField.Point point) {
+    private Set<Point> getBasin(Point point) {
         return map.depthSearch(point, IntField::surroundingPoints);
     }
 }

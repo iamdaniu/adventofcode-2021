@@ -36,10 +36,10 @@ public class IntField {
     }
 
     public Set<Point> depthSearch(Point point, BiFunction<IntField, Point, Stream<Point>> connected) {
-        Set<IntField.Point> basin = new HashSet<>();
+        Set<Point> basin = new HashSet<>();
         Queue<Point> toCheck = new ArrayDeque<>();
         toCheck.add(point);
-        IntField.Point currentPoint;
+        Point currentPoint;
         while ((currentPoint = toCheck.poll()) != null) {
             basin.add(currentPoint);
             connected.apply(this, currentPoint)
@@ -79,12 +79,10 @@ public class IntField {
     public static void print(IntField map) {
         for (int row = 0; row < map.getHeight(); row++) {
             for (int col = 0; col < map.getWidth(); col++) {
-                System.out.printf("%d", map.valueAt(new IntField.Point(row, col)));
+                System.out.printf("%d", map.valueAt(new Point(row, col)));
             }
             System.out.println();
         }
     }
 
-    public static record Point(int row, int col) {
-    }
 }
