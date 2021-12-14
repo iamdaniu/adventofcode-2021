@@ -6,6 +6,7 @@ import de.joern.day1.Day1_2;
 import de.joern.day11.Day11;
 import de.joern.day12.Day12;
 import de.joern.day13.Day13;
+import de.joern.day14.Day14;
 import de.joern.day2.Day2_1;
 import de.joern.day2.Day2_2;
 import de.joern.day3.Day3_1;
@@ -39,11 +40,8 @@ public class Driver {
 
     public static void execute(PROBLEMS problem) {
         try {
-            System.out.printf("Day %d%n", problem.day);
             List<ProblemSolver> solvers = problem.getSolvers();
-            for (int i = 0; i < solvers.size(); i++) {
-                System.out.printf(" %d-%d%n", problem.day, i+1);
-                ProblemSolver solver = solvers.get(i);
+            for (ProblemSolver solver : solvers) {
                 Files.lines(problem.getFile()).forEach(solver::consider);
                 solver.finished();
             }
@@ -66,6 +64,7 @@ public class Driver {
         DAY11(11, Day11::day11_1),
         DAY12(12, Day12::day12_1, Day12::day12_2),
         DAY13(13, Day13::new),
+        DAY14(14, Day14::day14_1, Day14::day14_2),
         ;
 
         public final int day;

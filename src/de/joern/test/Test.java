@@ -7,6 +7,7 @@ import de.joern.ProblemSolver;
 import de.joern.day11.Day11;
 import de.joern.day12.Day12;
 import de.joern.day13.Day13;
+import de.joern.day14.Day14;
 import de.joern.day2.Day2_1;
 import de.joern.day2.Day2_2;
 import de.joern.day3.Day3_1;
@@ -68,6 +69,9 @@ public class Test {
         result &= test(Day12.day12_2(), fromFile(12), 36);
         System.out.println("Day 13");
         result &= test(new Day13(), fromFile(13), 17);
+        System.out.println("Day 14");
+        result &= test(Day14.day14_1(), fromFile(14), 1588);
+        result &= test(Day14.day14_2(), fromFile(14), 2188189693529L);
 
         System.out.println(result ? "all tests successful" : "test(s) failed");
     }
