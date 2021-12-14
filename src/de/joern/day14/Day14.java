@@ -27,11 +27,7 @@ public class Day14 implements ProblemSolver {
     public void consider(String line) {
         if (!line.isEmpty()) {
             if (initialPairs == null) {
-                PolymerPairBuilder builder = new PolymerPairBuilder();
-                for (int i = 0; i < line.length(); i++) {
-                    builder.accept(line.charAt(i));
-                }
-                initialPairs = builder.getPairs();
+                initialPairs = parse(line);
             } else {
                 String[] split = line.split(" -> ");
                 PolymerPair pair = new PolymerPair(split[0].charAt(0), split[0].charAt(1));
@@ -43,17 +39,15 @@ public class Day14 implements ProblemSolver {
     @Override
     public long finished() {
         final List<GenerationStore> generationByStep = new ArrayList<>();
-        Map<PolymerPair, Long> pairCount = initialPairs.stream()
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        Map<Character, Long> initialCounts = toPolymerStream(initialPairs)
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        Map<PolymerPair, Long> pairCount = countOccurrences(initialPairs.stream());
+        Map<Character, Long> initialCounts = countOccurrences(toPolymerStream(initialPairs));
         GenerationStore store = new GenerationStore(pairCount, initialCounts);
         generationByStep.add(store);
 
         for (int i = 0; i < insertionCount; i++) {
             GenerationStore lastStep = generationByStep.get(i);
             Map<PolymerPair, Long> newPairs = new HashMap<>();
-            Map<Character, Long> generated = new HashMap<>(lastStep.generatedCount());
+            Map<Character, Long> generated = new HashMap<>(lastStep.totalCount());
             lastStep.getNewPairs().forEach((pair, count) -> {
                 generated.merge(insertions.get(pair), count, Long::sum);
                 insert(pair).forEach(p -> newPairs.merge(p, count, Long::sum));
@@ -63,7 +57,7 @@ public class Day14 implements ProblemSolver {
         }
 
         LongSummaryStatistics stats = generationByStep.get(generationByStep.size()-1)
-                .generatedCount().values().stream()
+                .totalCount().values().stream()
                 .mapToLong(l -> l)
                 .summaryStatistics();
         long result = stats.getMax() - stats.getMin();
@@ -72,10 +66,17 @@ public class Day14 implements ProblemSolver {
         return result;
     }
 
-    private static Stream<Character> toPolymerStream(List<PolymerPair> pairs) {
-        return Stream.concat(Stream.of(pairs.get(0).left()),
-                pairs.stream()
-                .map(PolymerPair::right));
+    private static List<PolymerPair> parse(String line) {
+        final List<PolymerPair> pairs = new ArrayList<>();
+        Character lastChar = null;
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (lastChar != null) {
+                pairs.add(new PolymerPair(lastChar, c));
+            }
+            lastChar = c;
+        }
+        return pairs;
     }
 
     private Stream<PolymerPair> insert(PolymerPair into) {
@@ -84,46 +85,31 @@ public class Day14 implements ProblemSolver {
                 new PolymerPair(toInsert, into.right()));
     }
 
+    private static Stream<Character> toPolymerStream(final List<PolymerPair> pairs) {
+        return Stream.concat(Stream.of(pairs.get(0).left()),
+                pairs.stream()
+                .map(PolymerPair::right));
+    }
+
     static class GenerationStore {
+
+        private final Map<PolymerPair, Long> newPairs;
+        private final Map<Character, Long> totalCount;
         public Map<PolymerPair, Long> getNewPairs() {
             return newPairs;
         }
 
-        private final Map<PolymerPair, Long> newPairs;
-
-        public Map<Character, Long> generatedCount() {
-            return totalGeneratedCount;
+        public Map<Character, Long> totalCount() {
+            return totalCount;
         }
-
-        private final Map<Character, Long> totalGeneratedCount;
 
         GenerationStore(Map<PolymerPair, Long> newPairs, Map<Character, Long> count) {
             this.newPairs = newPairs;
-            this.totalGeneratedCount = count;
+            this.totalCount = count;
         }
 
     }
-
-    static class PolymerPairBuilder {
-        private final List<PolymerPair> pairs = new ArrayList<>();
-
-        private Character lastChar;
-        public void accept(char c) {
-            if (lastChar != null) {
-                pairs.add(new PolymerPair(lastChar, c));
-            }
-            lastChar = c;
-        }
-
-        public List<PolymerPair> getPairs() {
-            return pairs;
-        }
-    }
-
-    static record PolymerPair(char left, char right) {
-        @Override
-        public String toString() {
-            return String.format("%s%s", left, right);
-        }
+    private static <T> Map<T, Long> countOccurrences(final Stream<T> in) {
+        return in.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 }
