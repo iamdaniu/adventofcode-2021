@@ -7,6 +7,7 @@ import de.joern.day11.Day11;
 import de.joern.day12.Day12;
 import de.joern.day13.Day13;
 import de.joern.day14.Day14;
+import de.joern.day15.Day15;
 import de.joern.day2.Day2_1;
 import de.joern.day2.Day2_2;
 import de.joern.day3.Day3_1;
@@ -43,6 +44,7 @@ public enum Problems {
     DAY12(12, Day12::day12_1, Day12::day12_2),
     DAY13(13, Day13::new),
     DAY14(14, Day14::day14_1, Day14::day14_2),
+    DAY15(15, Day15::new),
     ;
 
     public final int day;

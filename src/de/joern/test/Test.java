@@ -30,6 +30,7 @@ public class Test {
         EXPECTED_RESULTS.put(Problems.DAY12, List.of(10L, 36L));
         EXPECTED_RESULTS.put(Problems.DAY13, List.of(17L));
         EXPECTED_RESULTS.put(Problems.DAY14, List.of(1588L, 2188189693529L));
+        EXPECTED_RESULTS.put(Problems.DAY15, List.of(40L));
     }
 
     public static void main(String[] args) throws IOException {
