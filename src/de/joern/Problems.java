@@ -44,7 +44,7 @@ public enum Problems {
     DAY12(12, Day12::day12_1, Day12::day12_2),
     DAY13(13, Day13::new),
     DAY14(14, Day14::day14_1, Day14::day14_2),
-    DAY15(15, Day15::new),
+    DAY15(15, Day15::day15_1, Day15::day15_2),
     ;
 
     public final int day;

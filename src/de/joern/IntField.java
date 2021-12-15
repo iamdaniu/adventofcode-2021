@@ -2,6 +2,7 @@ package de.joern;
 
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -19,16 +20,27 @@ public class IntField {
     private final Map<Point, Integer> valueAt = new HashMap<>();
 
     public void add(String line) {
-        width = Math.max(width, line.length());
-        for (int i = 0; i < line.length(); i++) {
-            int value = line.charAt(i) - '0';
+        List<Integer> values = IntStream.range(0, line.length())
+                .map(i -> line.charAt(i) - '0')
+                .boxed()
+                .collect(Collectors.toList());
+        add(values);
+    }
+
+    public void add(List<Integer> line) {
+        width = Math.max(width, line.size());
+        for (int i = 0; i < line.size(); i++) {
+            int value = line.get(i);
             valueAt.put(new Point(height, i), value);
         }
         height++;
     }
 
     public void setValueAt(Point point, int value) {
-        valueAt.replace(point, value);
+        valueAt.put(point, value);
+//        valueAt.replace(point, value);
+        height = Math.max(height, point.row()+1);
+        width = Math.max(width, point.col()+1);
     }
 
     public Stream<Point> allPoints() {
@@ -72,7 +84,12 @@ public class IntField {
     }
 
     public int valueAt(Point point) {
-        return valueAt.get(point);
+        try {
+            return valueAt.get(point);
+        } catch (RuntimeException x) {
+            System.out.printf("could not access value for %s%n", point);
+            throw x;
+        }
     }
 
     @SuppressWarnings("unused")

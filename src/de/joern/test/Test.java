@@ -1,7 +1,10 @@
 package de.joern.test;
 
+import de.joern.IntField;
+import de.joern.Point;
 import de.joern.Problems;
 import de.joern.ProblemSolver;
+import de.joern.day15.FieldMultiplier;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,11 +33,11 @@ public class Test {
         EXPECTED_RESULTS.put(Problems.DAY12, List.of(10L, 36L));
         EXPECTED_RESULTS.put(Problems.DAY13, List.of(17L));
         EXPECTED_RESULTS.put(Problems.DAY14, List.of(1588L, 2188189693529L));
-        EXPECTED_RESULTS.put(Problems.DAY15, List.of(40L));
+        EXPECTED_RESULTS.put(Problems.DAY15, List.of(40L, 315L));
     }
 
     public static void main(String[] args) throws IOException {
-        boolean result = true;
+        boolean result = testMultiplier();
 
         for (int i = 0; i < Problems.values().length; i++) {
             System.out.printf("Day %d%n", i+1);
@@ -55,6 +58,21 @@ public class Test {
         boolean correct = result == expected;
         System.out.println(correct ? "ok" : "failed!");
         return correct;
+    }
+
+    private static boolean testMultiplier() throws IOException {
+        IntField original = new IntField();
+        original.setValueAt(new Point(0, 0), 8);
+        IntField expected = new IntField();
+        Files.lines(Paths.get("data/test", "multiplied.txt"))
+                .map(s -> s.replaceAll(" ", ""))
+                .forEach(expected::add);
+        IntField multiplied = FieldMultiplier.multiply(original);
+        IntField.print(multiplied);
+        return expected.allPoints()
+                .filter(p -> multiplied.valueAt(p) != expected.valueAt(p))
+                .findFirst()
+                .isEmpty();
     }
 
     private static Stream<String> fromFile(int day) throws IOException {

@@ -5,92 +5,63 @@ import de.joern.Point;
 import de.joern.ProblemSolver;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.function.UnaryOperator;
 
 public class Day15 implements ProblemSolver {
-    private final IntField field = new IntField();
+    private final IntField scanResult = new IntField();
+    private final UnaryOperator<IntField> getField;
+
+    private Day15(UnaryOperator<IntField> getField) {
+        this.getField = getField;
+    }
+
+    public static Day15 day15_1() {
+        return new Day15(UnaryOperator.identity());
+    }
+
+    public static Day15 day15_2() {
+        return new Day15(FieldMultiplier::multiply);
+    }
 
     @Override
     public void consider(String line) {
-        field.add(line);
+        scanResult.add(line);
     }
 
     @Override
     public long finished() {
+        IntField field = getField.apply(this.scanResult);
+
         Set<Point> toCheck = new HashSet<>();
         Point endPoint = new Point(field.getWidth()-1, field.getHeight()-1);
-        Map<Point, Path> shortestToEnd = new HashMap<>();
-        shortestToEnd.put(endPoint, new Path(field).append(endPoint));
+        Map<Point, Long> shortestToEnd = new HashMap<>();
+        shortestToEnd.put(endPoint, (long) field.valueAt(endPoint));
+
         field.surroundingPoints(endPoint).forEach(toCheck::add);
         Point startPoint = new Point(0, 0);
         while (!toCheck.isEmpty()) {
-//            System.out.printf("checking %s%n", toCheck);
             Set<Point> checkAfter = new HashSet<>();
             for (Point point : toCheck) {
-                Path shortestPathFromHere = field.surroundingPoints(point)
+                var shortestPathFromHere = field.surroundingPoints(point)
                         .filter(shortestToEnd::containsKey)
-                        .map(shortestToEnd::get)
-                        .min(Comparator.comparing(this::value))
-                        .orElseThrow()
-                        .prepend(point);
-                shortestToEnd.put(point, shortestPathFromHere);
-                if (!startPoint.equals(point)) {
-                    field.surroundingPoints(point)
-                            .filter(p -> !shortestToEnd.containsKey(p))
-                            .forEach(checkAfter::add);
+                        .mapToLong(p -> shortestToEnd.get(p) + field.valueAt(point))
+                        .min()
+                        .orElseThrow();
+                Long current = shortestToEnd.get(point);
+                if (current == null || current > shortestPathFromHere) {
+                    shortestToEnd.put(point, shortestPathFromHere);
+                    if (!startPoint.equals(point)) {
+                        field.surroundingPoints(point)
+                                .forEach(checkAfter::add);
+                    }
                 }
             }
             toCheck = checkAfter;
         }
-//        Point startPoint = new Point(0, 0);
-        Path shortestPath = shortestToEnd.get(startPoint);
-        long value = value(shortestPath) - field.valueAt(startPoint);
-        System.out.printf("shortest path from %s: %s - value %d%n", startPoint,
-                shortestPath, value);
+        var shortestPath = shortestToEnd.get(startPoint);
+        long value = shortestPath - field.valueAt(startPoint);
+        System.out.printf("value of shortest path from %s: %d%n", startPoint, value);
 
         return value;
-    }
-
-    public long value(Path p) {
-        return p.getPoints().stream()
-                .mapToLong(field::valueAt)
-                .sum();
-    }
-
-    static class Path {
-        private final IntField field;
-        private final List<Point> points;
-        Path(IntField field) {
-            this(field, Collections.emptyList());
-        }
-
-        Path(IntField field, List<Point> points) {
-            this.field = field;
-            this.points = points;
-        }
-        public Path append(Point p) {
-            List<Point> newPoints = new ArrayList<>(points);
-            newPoints.add(p);
-            return new Path(field, newPoints);
-        }
-        public Path prepend(Point p) {
-            List<Point> newPoints = new ArrayList<>(points);
-            newPoints.add(0, p);
-            return new Path(field, newPoints);
-        }
-
-        public List<Point> getPoints() {
-            return points;
-        }
-
-        @Override
-        public String toString() {
-            return points.stream()
-                    .map(this::pointString)
-                    .collect(Collectors.joining(", "));
-        }
-        private String pointString(Point p) {
-            return String.format("%d/%d (%d)", p.row(), p.col(), field.valueAt(p));
-        }
     }
 }
