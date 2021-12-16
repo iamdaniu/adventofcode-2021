@@ -4,8 +4,6 @@ import de.joern.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static de.joern.day16.Day16.*;
 
@@ -30,14 +28,15 @@ public class Day16 implements ProblemSolver {
 
     @Override
     public long finished() {
-//        transmissions.forEach(ContentParser::parseContent);
         int result = 0;
         for (BitView view : transmissions) {
             PacketContent content = ContentParser.parseContent(view);
             var version = versionSum(content);
             result += version;
-            System.out.printf("version sum of %s is %d; total %d%n", content, version, result);
+            System.out.println(content);
+            System.out.printf("value is %d%n", content.getValue());
         }
+        System.out.printf("total version sum %d%n", result);
         return result;
     }
     private int versionSum(PacketContent content) {
@@ -54,6 +53,7 @@ public class Day16 implements ProblemSolver {
 }
 
 interface PacketContent {
+    long getValue();
     int getLength();
     PacketHeader getHeader();
     List<PacketContent> getContained();

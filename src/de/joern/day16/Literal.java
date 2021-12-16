@@ -7,12 +7,13 @@ import java.util.List;
 
 class Literal implements PacketContent {
     BitView view;
-    private int length, itemCount;
+    private int length;
+    long value;
 
     public Literal(BitView parseFrom) {
-//        System.out.printf("parsing %s as a literal%n", parseFrom);
         // search first index of value that is has first bit set to 0
         length = PacketHeader.LENGTH;
+        var itemCount = 0;
         while (length < parseFrom.length() && parseFrom.isSet(length)) {
             length += 5;
             itemCount++;
@@ -21,6 +22,22 @@ class Literal implements PacketContent {
         length += 5;
         // pad with zeroes yields total length
         view = parseFrom.subView(0, this.length);
+        value = getValue(itemCount);
+    }
+
+    @Override
+    public long getValue() {
+        return value;
+    }
+
+    public long getValue(int itemCount) {
+        long result = 0;
+        for (int i = 0; i <= itemCount; i++) {
+            int index = PacketHeader.LENGTH + i*5 + 1;
+            BitView currentView = view.subView(index, 4);
+            result += currentView.toInt();
+        }
+        return result;
     }
 
     @Override
@@ -40,6 +57,7 @@ class Literal implements PacketContent {
 
     @Override
     public String toString() {
-        return String.format("literal version %d", getHeader().version());
+        return String.valueOf(getValue());
+//        return String.format("literal version %d value %d", getHeader().version(), getValue());
     }
 }

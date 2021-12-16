@@ -19,7 +19,7 @@ public class ContentParser {
     static List<PacketContent> parseMulti(BitView parseFrom) {
         return parseMulti(parseFrom, Integer.MAX_VALUE);
     }
-    static List<PacketContent> parseMulti(BitView parseFrom, int max) {
+    static List<PacketContent> parseMulti(BitView parseFrom, long max) {
         List<PacketContent> result = new ArrayList<>();
         int parsedLength = 0;
         BitView toParse = parseFrom;

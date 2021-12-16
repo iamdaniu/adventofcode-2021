@@ -35,7 +35,7 @@ class BitView {
         return new BitView(bits, this.offset + offset, length);
     }
 
-    int toInt() {
+    long toInt() {
         int result = 0;
         for (int i = 0; i < length; i++) {
             result <<= 1;
@@ -45,8 +45,8 @@ class BitView {
     }
 
     PacketHeader getHeader() {
-        int version = subView(0, 3).toInt();
-        int type = subView(3, 3).toInt();
+        int version = (int) subView(0, 3).toInt();
+        int type = (int) subView(3, 3).toInt();
         return new PacketHeader(version, type);
     }
 
