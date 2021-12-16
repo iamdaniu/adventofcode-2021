@@ -34,6 +34,7 @@ public class Test {
         EXPECTED_RESULTS.put(Problems.DAY13, List.of(17L));
         EXPECTED_RESULTS.put(Problems.DAY14, List.of(1588L, 2188189693529L));
         EXPECTED_RESULTS.put(Problems.DAY15, List.of(40L, 315L));
+        EXPECTED_RESULTS.put(Problems.DAY16, List.of(82L));
     }
 
     public static void main(String[] args) throws IOException {
@@ -55,8 +56,8 @@ public class Test {
     private static boolean test(ProblemSolver solver, Stream<String> values, long expected) {
         values.forEach(solver::consider);
         long result = solver.finished();
-        boolean correct = result == expected;
-        System.out.println(correct ? "ok" : "failed!");
+        final boolean correct = result == expected;
+        System.out.println(correct ? "ok" : "failed! expected " + expected + ", got " + result);
         return correct;
     }
 
