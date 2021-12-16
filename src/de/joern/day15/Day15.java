@@ -6,6 +6,7 @@ import de.joern.ProblemSolver;
 
 import java.util.*;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 public class Day15 implements ProblemSolver {
     private final IntField scanResult = new IntField();
@@ -32,19 +33,18 @@ public class Day15 implements ProblemSolver {
     public long finished() {
         IntField field = getField.apply(this.scanResult);
 
-        Set<Point> toCheck = new HashSet<>();
         Point endPoint = new Point(field.getWidth()-1, field.getHeight()-1);
         Map<Point, Long> shortestToEnd = new HashMap<>();
-        shortestToEnd.put(endPoint, (long) field.valueAt(endPoint));
+        shortestToEnd.put(endPoint, 0L);
 
-        field.surroundingPoints(endPoint).forEach(toCheck::add);
+        Set<Point> toCheck = field.surroundingPoints(endPoint).collect(Collectors.toSet());
         Point startPoint = new Point(0, 0);
         while (!toCheck.isEmpty()) {
             Set<Point> checkAfter = new HashSet<>();
             for (Point point : toCheck) {
                 var shortestPathFromHere = field.surroundingPoints(point)
                         .filter(shortestToEnd::containsKey)
-                        .mapToLong(p -> shortestToEnd.get(p) + field.valueAt(point))
+                        .mapToLong(p -> shortestToEnd.get(p) + field.valueAt(p))
                         .min()
                         .orElseThrow();
                 Long current = shortestToEnd.get(point);
@@ -59,9 +59,8 @@ public class Day15 implements ProblemSolver {
             toCheck = checkAfter;
         }
         var shortestPath = shortestToEnd.get(startPoint);
-        long value = shortestPath - field.valueAt(startPoint);
-        System.out.printf("value of shortest path from %s: %d%n", startPoint, value);
+        System.out.printf("value of shortest path from %s: %d%n", startPoint, shortestPath);
 
-        return value;
+        return shortestPath;
     }
 }
